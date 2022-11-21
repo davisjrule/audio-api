@@ -44,7 +44,7 @@ def index():
 # Example usage: curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/cantina.wav" http://127.0.0.1:5000/upload
 #                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/starwars.wav" http://127.0.0.1:5000/upload
 #                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/preamble.wav" http://127.0.0.1:5000/upload
-@app.route('/upload', methods=['POST', 'PUT'])
+@app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
         file = request.files['file']
@@ -62,8 +62,9 @@ def upload():
 
 
 # GET an audio file from uploads
+# RETURNS: audio file from uploads directory
 # Example usage: http://127.0.0.1:5000/download/name=preamble.wav
-@app.route('/download/name=<filename>')
+@app.route('/download/name=<filename>', methods=['GET'])
 def download(filename):
 
     found_audio = AudioFiles.query.filter_by(name=filename).first()
@@ -76,7 +77,7 @@ def download(filename):
 # GET a list of audio files in uploads
 # RETURNS: JSON with the file names
 # Example usage: http://127.0.0.1:5000/list
-# Example usage (with query): http://127.0.0.1:5000/maxduration=10
+# Example usage (with query): http://127.0.0.1:5000/list/maxduration=10
 @app.route('/list', methods=['GET'])
 @app.route('/list/maxduration=<maxduration>', methods = ['GET'])
 def list(maxduration=math.inf):
@@ -91,7 +92,7 @@ def list(maxduration=math.inf):
 # GET the metadata for an individual audio file
 # RETURNS: JSON with the file name, duration (in seconds), and filesize (in bytes)
 # Example usage: http://127.0.0.1:5000/info/preamble.wav
-@app.route('/info/name=<filename>')
+@app.route('/info/name=<filename>', methods=['GET'])
 def info(filename):
     # if file in database
     found_audio = AudioFiles.query.filter_by(name=filename).first()
