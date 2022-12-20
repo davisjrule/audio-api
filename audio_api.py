@@ -41,7 +41,9 @@ def index():
 
 
 # POST audio files to uploads
-# Example usage: curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/cantina.wav" http://127.0.0.1:5000/upload
+# Example usage: curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/test.wav" http://127.0.0.1:5000/upload
+#                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/piano.wav" http://127.0.0.1:5000/upload
+#                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/atlast.wav" http://127.0.0.1:5000/upload
 #                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/starwars.wav" http://127.0.0.1:5000/upload
 #                curl -X POST -F file=@"/Users/davisrule/Desktop/audio_files/preamble.wav" http://127.0.0.1:5000/upload
 @app.route('/upload', methods=['POST'])
@@ -66,7 +68,6 @@ def upload():
 # Example usage: http://127.0.0.1:5000/download/name=preamble.wav
 @app.route('/download/name=<filename>', methods=['GET'])
 def download(filename):
-
     found_audio = AudioFiles.query.filter_by(name=filename).first()
     if(found_audio):
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
